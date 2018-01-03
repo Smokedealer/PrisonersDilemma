@@ -2,6 +2,8 @@ import personas.Person;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -9,10 +11,10 @@ import java.util.function.Supplier;
  */
 public class Game {
 
-    static final int SCORE_COOPERATION = 1;
+    static final int SCORE_COOPERATION = 6;
     static final int SCORE_DEFECTION = 2;
-    static final int SCORE_TRIAL_WIN = 0;
-    static final int SCORE_TRIAL_LOST = 3;
+    static final int SCORE_TRIAL_WIN = 10;
+    static final int SCORE_TRIAL_LOST = -10;
 
 
     private ArrayList<Person> community;
@@ -27,35 +29,62 @@ public class Game {
 
     public void play() {
 
-        int totalYearsInPrison = 0;
+        int totalScore = 0;
 
         for (int i = 0; i < iterations; i++) {
             Collections.shuffle(community);
 
             for (int j = 0; j <= community.size() / 2; j += 2) {
-                totalYearsInPrison += matchPeople(community.get(j), community.get(j + 1));
+                totalScore += matchPeople(community.get(j), community.get(j + 1));
             }
         }
 
-        System.out.println("Total years spent in prison: \t" + totalYearsInPrison);
+        System.out.println("Total community score: " + totalScore);
     }
 
     private int matchPeople(Person person1, Person person2) {
         boolean decision1 = person1.decide();
         boolean decision2 = person2.decide();
 
-        person1.onPostTrial(person2, decision2, decision1);
-        person2.onPostTrial(person1, decision1, decision2);
+        int result1;
+        int result2;
 
         if (decision1 && decision2) { //Cooperation
-            return SCORE_COOPERATION * 2;
+            result1 = result2 = SCORE_COOPERATION;
         } else if (decision1 && !decision2) { //Person 1 was betrayed
-            return SCORE_TRIAL_LOST + SCORE_TRIAL_WIN;
+            result1 = SCORE_TRIAL_LOST;
+            result2 = SCORE_TRIAL_WIN;
         } else if (!decision1 && decision2) { //Person 2 was betrayed
-            return SCORE_TRIAL_WIN + SCORE_TRIAL_LOST;
+            result1 = SCORE_TRIAL_WIN;
+            result2 = SCORE_TRIAL_LOST;
         } else { //Defection
-            return SCORE_DEFECTION * 2;
+            result1 = result2 = SCORE_DEFECTION;
         }
+
+        person1.onPostTrial(person2, decision2, decision1);
+        person1.addScore(result1);
+
+        person2.onPostTrial(person1, decision1, decision2);
+        person2.addScore(result2);
+
+        return result1 + result2;
+    }
+
+    public void printCommunityResult() {
+        Map<Class<? extends Person>, Integer> ethnicities = new HashMap<>();
+
+        for (Person person : community) {
+            ethnicities.putIfAbsent(person.getClass(), 0);
+            ethnicities.compute(person.getClass(), (k, v) -> v + person.getScore());
+        }
+
+
+        System.out.println("\nIndividual ethnicity scores:");
+
+        for (Map.Entry<Class<? extends Person>, Integer> ethnicity : ethnicities.entrySet()) {
+            System.out.printf("%-20.20s %-20.20s%n", ethnicity.getKey().getSimpleName(), ethnicity.getValue());
+        }
+
     }
 
     public ArrayList<Person> addPeopleToCommunity(int peopleCount, Supplier<Person> personSupplier) {
@@ -66,5 +95,4 @@ public class Game {
 
         return community;
     }
-
 }

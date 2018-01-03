@@ -5,7 +5,7 @@ import personas.*;
  */
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game(1);
+        Game game = new Game(50);
 
         game.addPeopleToCommunity(1, Kavka::new);
         game.addPeopleToCommunity(1, Podrazak::new);
@@ -14,5 +14,7 @@ public class Main {
         game.addPeopleToCommunity(1, Rozmar::new);
 
         game.play();
+
+        game.printCommunityResult();
     }
 }

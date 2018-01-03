@@ -13,6 +13,6 @@ public class Podrazak extends Person {
     }
 
     public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
-        //TODO count score or whatever
+
     }
 }
