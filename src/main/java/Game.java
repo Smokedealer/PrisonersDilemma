@@ -16,7 +16,7 @@ public class Game {
     static final int SCORE_TRIAL_WIN = 10;
     static final int SCORE_TRIAL_LOST = -10;
 
-
+    Map<Class<? extends Person>, Integer> ethnicities;
     private ArrayList<Person> community;
 
     private int iterations;
@@ -24,10 +24,16 @@ public class Game {
 
     public Game(int iterations) {
         this.community = new ArrayList<>();
+        this.ethnicities = new HashMap<>();
         this.iterations = iterations;
     }
 
     public void play() {
+
+        if (community.size() < 2) {
+            System.err.println("Not enough people in community.");
+            return;
+        }
 
         int totalScore = 0;
 
@@ -71,8 +77,6 @@ public class Game {
     }
 
     public void printCommunityResult() {
-        Map<Class<? extends Person>, Integer> ethnicities = new HashMap<>();
-
         for (Person person : community) {
             ethnicities.putIfAbsent(person.getClass(), 0);
             ethnicities.compute(person.getClass(), (k, v) -> v + person.getScore());

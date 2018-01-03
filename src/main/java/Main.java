@@ -10,7 +10,7 @@ public class Main {
         game.addPeopleToCommunity(1, Kavka::new);
         game.addPeopleToCommunity(1, Podrazak::new);
         game.addPeopleToCommunity(1, TitForTat::new);
-        game.addPeopleToCommunity(1, TitForTwoTat::new);
+        game.addPeopleToCommunity(1, TitForTwoTats::new);
         game.addPeopleToCommunity(1, Rozmar::new);
 
         game.play();
