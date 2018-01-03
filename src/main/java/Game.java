@@ -1,6 +1,8 @@
+import personas.Person;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import personas.*;
+import java.util.function.Supplier;
 
 /**
  * Created by Matěj Kareš on 02.01.2018.
@@ -19,7 +21,7 @@ public class Game {
 
 
     public Game(int iterations) {
-        this.community = new ArrayList<Person>();
+        this.community = new ArrayList<>();
         this.iterations = iterations;
     }
 
@@ -42,6 +44,9 @@ public class Game {
         boolean decision1 = person1.decide();
         boolean decision2 = person2.decide();
 
+        person1.onPostTrial(person2, decision2, decision1);
+        person2.onPostTrial(person1, decision1, decision2);
+
         if (decision1 && decision2) { //Cooperation
             return SCORE_COOPERATION * 2;
         } else if (decision1 && !decision2) { //Person 1 was betrayed
@@ -53,9 +58,9 @@ public class Game {
         }
     }
 
-    public ArrayList<Person> addPeopleToCommunity(int peopleCount, Person personFactory) {
+    public ArrayList<Person> addPeopleToCommunity(int peopleCount, Supplier<Person> personSupplier) {
         for (int i = 0; i < peopleCount; i++) {
-            Person person = personFactory.newPerson();
+            Person person = personSupplier.get();
             community.add(person);
         }
 

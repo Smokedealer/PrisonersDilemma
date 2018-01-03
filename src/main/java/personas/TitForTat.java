@@ -3,16 +3,15 @@ package personas;
 /**
  * Created by Matěj Kareš on 03.01.2018.
  */
-public class Podrazak extends Person {
-    public Person newPerson() {
-        return new Podrazak();
-    }
+public class TitForTat extends Person {
+    boolean lastOpponentOutcome = true;
 
     public boolean decide() {
-        return false;
+        return lastOpponentOutcome;
     }
 
     public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
-        //TODO count score or whatever
+        lastOpponentOutcome = hisDecision;
     }
+
 }

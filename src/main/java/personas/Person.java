@@ -19,20 +19,6 @@ public abstract class Person {
 
     public abstract boolean decide();
 
-    public abstract Person newPerson();
+    public abstract void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision);
 
-
-//    public boolean decide() {
-//        switch (this.strategy){
-//            case kavka:
-//                return true;
-//            case podrazak:
-//                return false;
-//            case rozmar:
-//                return new Random().nextDouble() < cooperationProbability;
-//            default:
-//                System.err.println("Unsupported strategy. Choosing randomly.");
-//                return new Random().nextDouble() < cooperationProbability;
-//        }
-//    }
 }

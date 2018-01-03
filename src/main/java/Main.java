@@ -1,19 +1,17 @@
-import personas.Kavka;
-import personas.Podrazak;
+import personas.*;
 
 /**
  * Created by Matěj Kareš on 11.12.2017.
  */
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game(50);
+        Game game = new Game(1);
 
-        game.addPeopleToCommunity(50, new Kavka());
-        game.addPeopleToCommunity(50, new Podrazak());
-
-        //Všichni kavka - 2600 let
-        //Všichni podrazák - 5200 let
-        //Všichni rozmar - 3500 let +-
+        game.addPeopleToCommunity(1, Kavka::new);
+        game.addPeopleToCommunity(1, Podrazak::new);
+        game.addPeopleToCommunity(1, TitForTat::new);
+        game.addPeopleToCommunity(1, TitForTwoTat::new);
+        game.addPeopleToCommunity(1, Rozmar::new);
 
         game.play();
     }
