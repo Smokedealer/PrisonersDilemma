@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import personas.*;
 
 /**
  * Created by Matěj Kareš on 02.01.2018.
@@ -16,12 +17,10 @@ public class Game {
 
     private int iterations;
 
-    private Strategy strategy;
 
-    public Game(int communitySize, int iterations, Strategy strategy) {
-        this.community = createCommunity(communitySize);
+    public Game(int iterations) {
+        this.community = new ArrayList<Person>();
         this.iterations = iterations;
-        this.strategy = strategy;
     }
 
     public void play() {
@@ -40,8 +39,8 @@ public class Game {
     }
 
     private int matchPeople(Person person1, Person person2) {
-        boolean decision1 = person1.decide(strategy);
-        boolean decision2 = person2.decide(strategy);
+        boolean decision1 = person1.decide();
+        boolean decision2 = person2.decide();
 
         if (decision1 && decision2) { //Cooperation
             return SCORE_COOPERATION * 2;
@@ -54,11 +53,9 @@ public class Game {
         }
     }
 
-    public ArrayList<Person> createCommunity(int peopleCount) {
-        ArrayList<Person> community = new ArrayList<Person>(peopleCount);
-
+    public ArrayList<Person> addPeopleToCommunity(int peopleCount, Person personFactory) {
         for (int i = 0; i < peopleCount; i++) {
-            Person person = new Person(0.5f);
+            Person person = personFactory.newPerson();
             community.add(person);
         }
 
