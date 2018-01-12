@@ -4,7 +4,7 @@ package personas;
  * Created by Matěj Kareš on 03.01.2018.
  */
 public class TitForTat extends Person {
-    boolean lastOpponentOutcome = true;
+    private boolean lastOpponentOutcome = true;
 
     public boolean decide() {
         return lastOpponentOutcome;

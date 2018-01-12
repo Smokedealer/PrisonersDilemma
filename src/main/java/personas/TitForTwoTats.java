@@ -6,10 +6,10 @@ import java.util.LinkedList;
  * Created by Matěj Kareš on 03.01.2018.
  */
 public class TitForTwoTats extends Person {
-    LinkedList<Boolean> history;
+    private LinkedList<Boolean> history;
 
     public TitForTwoTats() {
-        history = new LinkedList<Boolean>();
+        history = new LinkedList<>();
 
         //Default to "not yet betrayed"
         history.add(true);
