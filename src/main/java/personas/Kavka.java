@@ -5,11 +5,9 @@ package personas;
  */
 public class Kavka extends Person {
 
+    @Override
     public boolean decide() {
         return true;
     }
 
-    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
-        //TODO count score or whatever
-    }
 }

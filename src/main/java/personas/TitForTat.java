@@ -1,17 +1,27 @@
 package personas;
 
+import java.util.HashSet;
+
 /**
  * Created by Matěj Kareš on 03.01.2018.
  */
-public class TitForTat extends Person {
-    private boolean lastOpponentOutcome = true;
+public class TitForTat extends InsiderPerson {
+    private HashSet<Personality> crossedMe = new HashSet<>(); // set of TF2T opponents which I can betray
 
-    public boolean decide() {
-        return lastOpponentOutcome;
+
+    @Override
+    public boolean decide(Personality opponent) {
+        return !crossedMe.contains(opponent);
     }
 
-    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
-        lastOpponentOutcome = hisDecision;
+    @Override
+    public void onPostTrial(Personality opponent, boolean hisDecision, boolean myDecision) {
+        if(hisDecision) {
+            crossedMe.remove(opponent);
+        }
+        else {
+            crossedMe.add(opponent);
+        }
     }
 
 }

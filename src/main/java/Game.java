@@ -49,8 +49,8 @@ public class Game {
     }
 
     private int matchPeople(Person person1, Person person2) {
-        boolean decision1 = person1.decide();
-        boolean decision2 = person2.decide();
+        boolean decision1 = person1.decide(person2);
+        boolean decision2 = person2.decide(person1);
 
         int result1;
         int result2;

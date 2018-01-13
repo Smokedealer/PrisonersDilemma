@@ -3,7 +3,7 @@ package personas;
 /**
  * Created by Matěj Kareš on 02.01.2018.
  */
-public abstract class Person {
+public abstract class Person implements Personality {
 
     static int lastID = 0;
 
@@ -26,9 +26,27 @@ public abstract class Person {
         this.score = score;
     }
 
+    /**
+     * Make a decision for trial.
+     * True denotes 'being good' - cooperation with other player.
+     * False denotes 'being bad' - rat the other player out/doublecross.
+     *
+     * @return Decision.
+     */
     public abstract boolean decide();
 
-    public abstract void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision);
+    /**
+     * Make a decision for trial based on the personality of opponent
+     * True denotes 'being good' - cooperation with other player.
+     * False denotes 'being bad' - rat the other player out/doublecross.
+     *
+     * @return Decision.
+     */
+    public boolean decide(Personality opponent) {
+        return decide();
+    }
+
+    public void onPostTrial(Personality opponent, boolean hisDecision, boolean myDecision) {}
 
     public void addScore(int score){
         setScore(getScore() + score);

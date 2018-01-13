@@ -5,11 +5,9 @@ package personas;
  */
 public class Podrazak extends Person {
 
+    @Override
     public boolean decide() {
         return false;
     }
 
-    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
-
-    }
 }
