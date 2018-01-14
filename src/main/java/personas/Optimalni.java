@@ -5,12 +5,12 @@ import java.util.HashSet;
 /**
  * Created by ike
  */
-public class Optimalni extends Person {
-    private HashSet<Personality> betrayableTf2t = new HashSet<>(); // set of TF2T opponents which I can betray
+public class Optimalni extends SuspectedPerson {
+    private HashSet<Person> betrayableTf2t = new HashSet<>(); // set of TF2T opponents which I can betray
 
 
     @Override
-    public boolean decide(Personality opponent) {
+    public boolean decide(Person opponent) {
 
         if(opponent instanceof Optimalni) {
             return true;
@@ -30,7 +30,7 @@ public class Optimalni extends Person {
     }
 
     @Override
-    public void onPostTrial(Personality opponent, boolean hisDecision, boolean myDecision) {
+    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
         if(opponent instanceof TitForTwoTats) {
             if(hisDecision) {
                 betrayableTf2t.add(opponent);

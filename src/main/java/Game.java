@@ -1,4 +1,4 @@
-import personas.Person;
+import personas.SuspectedPerson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,8 @@ public class Game {
     static final int SCORE_TRIAL_WIN = 10;
     static final int SCORE_TRIAL_LOST = -10;
 
-    Map<Class<? extends Person>, Integer> ethnicities;
-    private ArrayList<Person> community;
+    Map<Class<? extends SuspectedPerson>, Integer> ethnicities;
+    private ArrayList<SuspectedPerson> community;
 
     private int iterations;
 
@@ -48,7 +48,7 @@ public class Game {
         System.out.println("Total community score: " + totalScore);
     }
 
-    private int matchPeople(Person person1, Person person2) {
+    private int matchPeople(SuspectedPerson person1, SuspectedPerson person2) {
         boolean decision1 = person1.decide(person2);
         boolean decision2 = person2.decide(person1);
 
@@ -57,10 +57,10 @@ public class Game {
 
         if (decision1 && decision2) { //Cooperation
             result1 = result2 = SCORE_COOPERATION;
-        } else if (decision1 && !decision2) { //Person 1 was betrayed
+        } else if (decision1 && !decision2) { //SuspectedPerson 1 was betrayed
             result1 = SCORE_TRIAL_LOST;
             result2 = SCORE_TRIAL_WIN;
-        } else if (!decision1 && decision2) { //Person 2 was betrayed
+        } else if (!decision1 && decision2) { //SuspectedPerson 2 was betrayed
             result1 = SCORE_TRIAL_WIN;
             result2 = SCORE_TRIAL_LOST;
         } else { //Defection
@@ -77,7 +77,7 @@ public class Game {
     }
 
     public void printCommunityResult() {
-        for (Person person : community) {
+        for (SuspectedPerson person : community) {
             ethnicities.putIfAbsent(person.getClass(), 0);
             ethnicities.compute(person.getClass(), (k, v) -> v + person.getScore());
         }
@@ -85,15 +85,15 @@ public class Game {
 
         System.out.println("\nIndividual ethnicity scores:");
 
-        for (Map.Entry<Class<? extends Person>, Integer> ethnicity : ethnicities.entrySet()) {
+        for (Map.Entry<Class<? extends SuspectedPerson>, Integer> ethnicity : ethnicities.entrySet()) {
             System.out.printf("%-20.20s %-20.20s%n", ethnicity.getKey().getSimpleName(), ethnicity.getValue());
         }
 
     }
 
-    public ArrayList<Person> addPeopleToCommunity(int peopleCount, Supplier<Person> personSupplier) {
+    public ArrayList<SuspectedPerson> addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier) {
         for (int i = 0; i < peopleCount; i++) {
-            Person person = personSupplier.get();
+            SuspectedPerson person = personSupplier.get();
             community.add(person);
         }
 

@@ -6,12 +6,12 @@ import java.util.LinkedList;
 /**
  * Created by Matěj Kareš on 03.01.2018.
  */
-public class TitForTwoTats extends Person {
-    private HashMap<Personality, LinkedList<Boolean>> history = new HashMap<>(); // set of TF2T opponents which I can betray
+public class TitForTwoTats extends SuspectedPerson {
+    private HashMap<Person, LinkedList<Boolean>> history = new HashMap<>(); // set of TF2T opponents which I can betray
 
 
     @Override
-    public boolean decide(Personality opponent) {
+    public boolean decide(Person opponent) {
         if(!history.containsKey(opponent)) {
             history.put(opponent, new LinkedList<Boolean>(){{ add(true); add(true); }}); // add first true results - "not yet betrayed" state
         }
@@ -22,7 +22,7 @@ public class TitForTwoTats extends Person {
     }
 
     @Override
-    public void onPostTrial(Personality opponent, boolean hisDecision, boolean myDecision) {
+    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {
         LinkedList<Boolean> prev = history.get(opponent);
 
         prev.add(hisDecision);
