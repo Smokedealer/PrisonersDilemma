@@ -6,7 +6,7 @@ import java.util.LinkedList;
 /**
  * Created by Matěj Kareš on 03.01.2018.
  */
-public class TitForTwoTats extends InsiderPerson {
+public class TitForTwoTats extends Person {
     private HashMap<Personality, LinkedList<Boolean>> history = new HashMap<>(); // set of TF2T opponents which I can betray
 
 

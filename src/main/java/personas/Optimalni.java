@@ -5,7 +5,7 @@ import java.util.HashSet;
 /**
  * Created by ike
  */
-public class Optimalni extends InsiderPerson {
+public class Optimalni extends Person {
     private HashSet<Personality> betrayableTf2t = new HashSet<>(); // set of TF2T opponents which I can betray
 
 

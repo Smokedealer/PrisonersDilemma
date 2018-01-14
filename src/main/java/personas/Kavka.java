@@ -6,7 +6,7 @@ package personas;
 public class Kavka extends Person {
 
     @Override
-    public boolean decide() {
+    public boolean decide(Personality opponent) {
         return true;
     }
 

@@ -8,7 +8,7 @@ import java.util.Random;
 public class Rozmar extends Person {
 
     @Override
-    public boolean decide() {
+    public boolean decide(Personality opponent) {
         return new Random().nextDouble() < 0.5f;
     }
 

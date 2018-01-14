@@ -27,24 +27,13 @@ public abstract class Person implements Personality {
     }
 
     /**
-     * Make a decision for trial.
-     * True denotes 'being good' - cooperation with other player.
-     * False denotes 'being bad' - rat the other player out/doublecross.
-     *
-     * @return Decision.
-     */
-    public abstract boolean decide();
-
-    /**
      * Make a decision for trial based on the personality of opponent
      * True denotes 'being good' - cooperation with other player.
      * False denotes 'being bad' - rat the other player out/doublecross.
      *
      * @return Decision.
      */
-    public boolean decide(Personality opponent) {
-        return decide();
-    }
+    public abstract boolean decide(Personality opponent);
 
     public void onPostTrial(Personality opponent, boolean hisDecision, boolean myDecision) {}
 
