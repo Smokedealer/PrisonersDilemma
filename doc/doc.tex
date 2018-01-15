@@ -1,0 +1,92 @@
+\documentclass[pdftex,a4paper]{article}
+\usepackage[lmargin=1.25in,rmargin=1.25in,tmargin=1in,bmargin=1in]{geometry}
+\usepackage[IL2]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{needspace}
+\usepackage{setspace}
+\usepackage{afterpage}
+\usepackage{mathtools}
+\usepackage{varwidth}
+\usepackage{textgreek}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage[justification=centering]{caption}
+\usepackage[unicode,pdfdisplaydoctitle,pdftex,colorlinks,allcolors=black]{hyperref}
+\usepackage[scaled=0.82]{DejaVuSansMono}
+\usepackage{hyperxmp}
+\title{KIV/VSS - Simulace hry "vězňovo dilema"}
+\author{Vojtěch Kinkor; Matěj Kareš}
+\date{\today}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+
+\lstset{
+	numbers=left,
+	numberstyle=\ttfamily\color[HTML]{777777},
+	frame=lines,
+	framexleftmargin=0.5em,
+	framexrightmargin=0.5em,
+	showstringspaces=false,
+	backgroundcolor=\color[HTML]{F7F7F7},
+	commentstyle=\itshape\color[HTML]{555555},
+	keywordstyle=\color[HTML]{244093},
+	stringstyle=\color[HTML]{3B8124},
+	breakatwhitespace=true,
+	breaklines=true,
+	basicstyle=\small\ttfamily\selectfont,
+	keepspaces=true, 
+	language={},     
+	tabsize=4,  	
+	escapeinside={\%*}{*)},	 
+	extendedchars=false,
+	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow\space}},
+	literate = {-}{-}1, % do not collapse hyphens
+}
+
+\newcommand*{\parvsp}{\par\vspace{\baselineskip}\noindent}
+\renewcommand{\lstlistingname}{Kód}
+\mathcode`.="002C % replace dots in math mode with commas, https://www.fi.muni.cz/cstug/csfaq/sectT.html
+\def\doteq{\buildrel\textstyle\ldotp\over=} % fix \doteq
+
+
+
+\begin{document}
+
+\input{titlepage.tex}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+
+
+\section{Zadání}
+
+
+\newpage
+\section{Analýza}
+
+
+\newpage
+\section{Realizace}
+
+
+\newpage
+\section{Závěr}
+
+Zadání bylo splněno v~celém rozsahu.
+
+
+
+\end{document}
