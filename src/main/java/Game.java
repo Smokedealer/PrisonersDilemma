@@ -14,7 +14,7 @@ public class Game {
     private static final int SCORE_TRIAL_WIN = 10;
     private static final int SCORE_TRIAL_LOST = -10;
 
-    private Map<EthnicGroup, Integer> groups = new HashMap<>();
+    private Set<EthnicGroup> groups = new HashSet<>();
     private List<SuspectedPerson> community = new ArrayList<>();
 
     private int iterations;
@@ -52,10 +52,10 @@ public class Game {
 
         if (decision1 && decision2) { // Cooperation
             result1 = result2 = SCORE_COOPERATION;
-        } else if (decision1 && !decision2) { // SuspectedPerson 1 was betrayed
+        } else if (decision1 && !decision2) { // Person 1 was betrayed
             result1 = SCORE_TRIAL_LOST;
             result2 = SCORE_TRIAL_WIN;
-        } else if (!decision1 && decision2) { // SuspectedPerson 2 was betrayed
+        } else if (!decision1 && decision2) { // Person 2 was betrayed
             result1 = SCORE_TRIAL_WIN;
             result2 = SCORE_TRIAL_LOST;
         } else { // Defection
@@ -68,22 +68,19 @@ public class Game {
         person2.onPostTrial(person1, decision1, decision2);
         person2.addScore(result2);
 
+        person1.getEthnicGroup().addScore(result1);
+        person2.getEthnicGroup().addScore(result2);
+
         return result1 + result2;
     }
 
 
     public void printCommunityResult() {
-        for (SuspectedPerson person : community) {
-            groups.putIfAbsent(person.getEthnicGroup(), 0);
-            groups.compute(person.getEthnicGroup(), (k, v) -> v + person.getScore());
-        }
-
         System.out.println("\nIndividual ethnicity scores:");
 
-        for (Map.Entry<EthnicGroup, Integer> group : groups.entrySet()) {
-            System.out.printf("%-20.20s %-20.20s%n", group.getKey().getName(), group.getValue());
+        for (EthnicGroup group : groups) {
+            System.out.printf("%-20.20s %-20.20s%n", group.getName(), group.getScore());
         }
-
     }
 
 
@@ -104,5 +101,7 @@ public class Game {
 
             community.add(person);
         }
+
+        groups.add(ethnicGroup);
     }
 }
