@@ -1,9 +1,7 @@
+import ethnicity.EthnicGroup;
 import personas.SuspectedPerson;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -11,25 +9,22 @@ import java.util.function.Supplier;
  */
 public class Game {
 
-    static final int SCORE_COOPERATION = 6;
-    static final int SCORE_DEFECTION = 2;
-    static final int SCORE_TRIAL_WIN = 10;
-    static final int SCORE_TRIAL_LOST = -10;
+    private static final int SCORE_COOPERATION = 6;
+    private static final int SCORE_DEFECTION = 2;
+    private static final int SCORE_TRIAL_WIN = 10;
+    private static final int SCORE_TRIAL_LOST = -10;
 
-    Map<Class<? extends SuspectedPerson>, Integer> ethnicities;
-    private ArrayList<SuspectedPerson> community;
+    private Map<EthnicGroup, Integer> groups = new HashMap<>();
+    private List<SuspectedPerson> community = new ArrayList<>();
 
     private int iterations;
 
-
     public Game(int iterations) {
-        this.community = new ArrayList<>();
-        this.ethnicities = new HashMap<>();
         this.iterations = iterations;
     }
 
-    public void play() {
 
+    public void play() {
         if (community.size() < 2) {
             System.err.println("Not enough people in community.");
             return;
@@ -55,15 +50,15 @@ public class Game {
         int result1;
         int result2;
 
-        if (decision1 && decision2) { //Cooperation
+        if (decision1 && decision2) { // Cooperation
             result1 = result2 = SCORE_COOPERATION;
-        } else if (decision1 && !decision2) { //SuspectedPerson 1 was betrayed
+        } else if (decision1 && !decision2) { // SuspectedPerson 1 was betrayed
             result1 = SCORE_TRIAL_LOST;
             result2 = SCORE_TRIAL_WIN;
-        } else if (!decision1 && decision2) { //SuspectedPerson 2 was betrayed
+        } else if (!decision1 && decision2) { // SuspectedPerson 2 was betrayed
             result1 = SCORE_TRIAL_WIN;
             result2 = SCORE_TRIAL_LOST;
-        } else { //Defection
+        } else { // Defection
             result1 = result2 = SCORE_DEFECTION;
         }
 
@@ -76,27 +71,38 @@ public class Game {
         return result1 + result2;
     }
 
+
     public void printCommunityResult() {
         for (SuspectedPerson person : community) {
-            ethnicities.putIfAbsent(person.getClass(), 0);
-            ethnicities.compute(person.getClass(), (k, v) -> v + person.getScore());
+            groups.putIfAbsent(person.getEthnicGroup(), 0);
+            groups.compute(person.getEthnicGroup(), (k, v) -> v + person.getScore());
         }
-
 
         System.out.println("\nIndividual ethnicity scores:");
 
-        for (Map.Entry<Class<? extends SuspectedPerson>, Integer> ethnicity : ethnicities.entrySet()) {
-            System.out.printf("%-20.20s %-20.20s%n", ethnicity.getKey().getSimpleName(), ethnicity.getValue());
+        for (Map.Entry<EthnicGroup, Integer> group : groups.entrySet()) {
+            System.out.printf("%-20.20s %-20.20s%n", group.getKey().getName(), group.getValue());
         }
 
     }
 
-    public ArrayList<SuspectedPerson> addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier) {
+
+    public void addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier) {
+        addPeopleToCommunity(peopleCount, personSupplier, null);
+    }
+
+    public void addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier, EthnicGroup ethnicGroup) {
         for (int i = 0; i < peopleCount; i++) {
+
             SuspectedPerson person = personSupplier.get();
+
+            if(ethnicGroup == null) {
+                ethnicGroup = person.getEthnicGroup(); // gets default one of first person in group
+            }
+
+            person.setEthnicGroup(ethnicGroup);
+
             community.add(person);
         }
-
-        return community;
     }
 }

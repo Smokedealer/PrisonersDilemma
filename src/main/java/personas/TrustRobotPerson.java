@@ -1,22 +1,23 @@
 package personas;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Matěj Kareš on 03.01.2018.
+ * Created by ike.
  */
-public class TrustBasedPerson extends SuspectedPerson {
-    private HashMap<Person, Double> trustMap = new HashMap<>(); // set of TF2T opponents which I can betray
+public class TrustRobotPerson extends SuspectedPerson {
+    private Map<Person, Double> trustMap = new HashMap<>();
 
     private double defaultTrust = 0.5;
     private double increaseStep = 0.1;
     private double decreaseStep = 0.1;
 
-    public TrustBasedPerson(double defaultTrust) {
+    public TrustRobotPerson(double defaultTrust) {
         this.defaultTrust = defaultTrust;
     }
 
-    public TrustBasedPerson(double defaultTrust, double increaseStep, double decreaseStep) {
+    public TrustRobotPerson(double defaultTrust, double increaseStep, double decreaseStep) {
         this.defaultTrust = defaultTrust;
         this.increaseStep = increaseStep;
         this.decreaseStep = decreaseStep;
@@ -24,12 +25,9 @@ public class TrustBasedPerson extends SuspectedPerson {
 
     @Override
     public boolean decide(Person opponent) {
-        if(!trustMap.containsKey(opponent)) {
-            trustMap.put(opponent, defaultTrust); // add first true results - "not yet betrayed" state
-        }
+        trustMap.putIfAbsent(opponent, defaultTrust); // add first true results - "not yet betrayed" state
 
         Double trust = trustMap.get(opponent);
-
         return trust >= 0.5;
     }
 

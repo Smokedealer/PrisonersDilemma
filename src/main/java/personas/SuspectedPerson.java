@@ -1,26 +1,44 @@
 package personas;
 
+import ethnicity.EthnicGroup;
+import ethnicity.Ethnicity;
+
 /**
  * Created by Matěj Kareš on 02.01.2018.
  */
 public abstract class SuspectedPerson implements Person {
 
     private static int lastID = 0;
-
     private final int id;
-    private int score;
+
+    private int score = 0;
+    protected EthnicGroup ethnicGroup;
 
     public SuspectedPerson() {
-        this.id = lastID++;
+        id = lastID++;
     }
 
+
     /**
-     * Gets ID of person.
+     * <p>Make a decision for trial.
+     * <p>{@code true} denotes 'being good' - cooperation with other player.
+     * <br>{@code false} denotes 'being bad' - rat the other player out/doublecross.
+     *
+     * @param opponent Oppponent.
+     * @return Decision.
      */
-    @Override
-    public int getId() {
-        return id;
-    }
+    public abstract boolean decide(Person opponent);
+
+    /**
+     * Event called after a trial (when two chosen people returns their decision).
+     * @param opponent Opponent.
+     * @param hisDecision Opponent's decision.
+     * @param myDecision My decision.
+     */
+    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {}
+
+
+
 
     /**
      * Gets score sum.
@@ -46,22 +64,31 @@ public abstract class SuspectedPerson implements Person {
     }
 
     /**
-     * <p>Make a decision for trial.
-     * <p>{@code true} denotes 'being good' - cooperation with other player.
-     * <br>{@code false} denotes 'being bad' - rat the other player out/doublecross.
-     *
-     * @param opponent Oppponent.
-     * @return Decision.
+     * Sets ethnic group.
+     * @param ethnicGroup
      */
-    public abstract boolean decide(Person opponent);
+    public void setEthnicGroup(EthnicGroup ethnicGroup) {
+        if(ethnicGroup == null) {
+            ethnicGroup = new EthnicGroup(this.getClass().getSimpleName() + "_" + id);
+        }
+        this.ethnicGroup = ethnicGroup;
+    }
 
     /**
-     * Event called after a trial (when two chosen people returns their decision).
-     * @param opponent Opponent.
-     * @param hisDecision Opponent's decision.
-     * @param myDecision My decision.
+     * Gets ethnic group. Creates a default one if ethnicGroup is null.
      */
-    public void onPostTrial(Person opponent, boolean hisDecision, boolean myDecision) {}
+    public EthnicGroup getEthnicGroup() {
+        if(ethnicGroup == null) setEthnicGroup(null);
+        return ethnicGroup;
+    }
+
+    /**
+     * Gets ethnicity.
+     */
+    @Override
+    public Ethnicity getEthnicity() {
+        return ethnicGroup;
+    }
 
 
 }
