@@ -8,12 +8,15 @@ public class Main {
 
         Game game = new Game(500);
 
-        game.addPeopleToCommunity(1, Kavka::new);
-        game.addPeopleToCommunity(1, Podrazak::new);
-        game.addPeopleToCommunity(1, TitForTat::new);
-        game.addPeopleToCommunity(1, TitForTwoTats::new);
-        game.addPeopleToCommunity(1, Rozmar::new);
-        game.addPeopleToCommunity(1, Optimalni::new);
+        //game.addPeopleToCommunity(1, Kavka::new);
+        //game.addPeopleToCommunity(1, Podrazak::new);
+        //game.addPeopleToCommunity(1, TitForTat::new);
+        //game.addPeopleToCommunity(1, TitForTat::new);
+        //game.addPeopleToCommunity(1, TitForTwoTats::new);
+        //game.addPeopleToCommunity(1, Rozmar::new);
+        //game.addPeopleToCommunity(1, Optimalni::new);
+        game.addPeopleToCommunity(1, () -> new TrustBasedPerson(0.0, 1.0, 1.0)); // act as tit for tat, begin with faul
+        game.addPeopleToCommunity(1, () -> new TrustBasedPerson(1.0, 1.0, 1.0)); // act as tit for tat, begin with cooperation
 
         game.play();
 
