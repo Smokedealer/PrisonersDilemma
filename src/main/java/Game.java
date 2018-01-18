@@ -34,6 +34,8 @@ public class Game {
             return;
         }
 
+        logCurrentStep();
+
         for (int i = 0; i < iterations; i++) {
             Collections.shuffle(community);
 
@@ -108,6 +110,10 @@ public class Game {
                 System.out.println(group.getName() + " -> " + ethnicity.getName() + ": " + trust);
             });
         }
+    }
+
+    public void showHistoryGraph() {
+        GameHistoryVisualizer.visualize(history);
     }
 
     public void addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier) {

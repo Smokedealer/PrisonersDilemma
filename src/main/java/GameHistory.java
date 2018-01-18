@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class GameHistory {
 
-    private class EthnicGroupRecord {
+    public class EthnicGroupRecord {
         int wealth;
         HashMap<Ethnicity,Double> trustLevels;
     }
@@ -73,4 +73,11 @@ public class GameHistory {
     }
 
 
+    public List<Integer> getCommunityWealth() {
+        return communityWealth;
+    }
+
+    public Map<EthnicGroup, List<EthnicGroupRecord>> getEthnicGroupHistory() {
+        return ethnicGroupHistory;
+    }
 }
