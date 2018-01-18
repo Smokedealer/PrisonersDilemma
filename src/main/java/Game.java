@@ -29,8 +29,6 @@ public class Game {
 
 
     public void play() {
-        prepareHistory();
-
         if (community.size() < 2) {
             System.err.println("Not enough people in community.");
             return;
@@ -50,18 +48,13 @@ public class Game {
     }
 
     private void logCurrentStep(){
-        history.addCommunityWealth(totalScore);
+        history.recordCommunityWealth(totalScore);
 
         for (EthnicGroup group : groups) {
-            history.recordImmediateEthnicityWealth(group, group.getScore());
+            history.recordEthnicGroup(group, group.getScore());
         }
     }
 
-    private void prepareHistory() {
-        for(SuspectedPerson person : community){
-            history.addEthnicity(person.getEthnicGroup());
-        }
-    }
 
     private int matchPeople(SuspectedPerson person1, SuspectedPerson person2) {
         boolean decision1 = person1.decide(person2);
@@ -99,10 +92,23 @@ public class Game {
         System.out.println("\nIndividual ethnicity scores:");
 
         for (EthnicGroup group : groups) {
-            System.out.printf("%-20.20s %-20.20s%n", group.getName(), group.getScore());
+            System.out.printf("%-21.21s: %d%n", group.getName(), group.getScore());
         }
     }
 
+    public void printHistory() {
+        System.out.println();
+        System.out.println("History:");
+        System.out.println(history.getHistoryJSON());
+    }
+
+    public void printEthnicGroupsTrustLevels() {
+        for (EthnicGroup group : groups) {
+            group.getTrustLevels().forEach((ethnicity, trust) -> {
+                System.out.println(group.getName() + " -> " + ethnicity.getName() + ": " + trust);
+            });
+        }
+    }
 
     public void addPeopleToCommunity(int peopleCount, Supplier<SuspectedPerson> personSupplier) {
         addPeopleToCommunity(peopleCount, personSupplier, null);
@@ -123,5 +129,6 @@ public class Game {
         }
 
         groups.add(ethnicGroup);
+        history.addEthnicGroup(ethnicGroup);
     }
 }

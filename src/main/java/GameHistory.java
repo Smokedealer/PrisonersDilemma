@@ -1,54 +1,76 @@
 import ethnicity.EthnicGroup;
+import ethnicity.Ethnicity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Matěj Kareš on 18.01.2018.
  */
 public class GameHistory {
-    Map<EthnicGroup, ArrayList<Integer>> ethnicityWealth = new HashMap<>();
 
-    ArrayList<Integer> communityWealth = new ArrayList<>();
+    private class EthnicGroupRecord {
+        int wealth;
+        HashMap<Ethnicity,Double> trustLevels;
+    }
 
-    public void addCommunityWealth(int wealth){
+    private List<Integer> communityWealth = new ArrayList<>();
+    private Map<EthnicGroup, List<EthnicGroupRecord>> ethnicGroupHistory = new HashMap<>();
+
+    public void recordCommunityWealth(int wealth){
         communityWealth.add(wealth);
     }
 
-    public void addEthnicity(EthnicGroup ethnicGroup){
-        ethnicityWealth.putIfAbsent(ethnicGroup, new ArrayList<>());
+    public void recordEthnicGroup(EthnicGroup group, int wealth){
+        EthnicGroupRecord record = new EthnicGroupRecord();
+        record.wealth = wealth;
+        record.trustLevels = new HashMap<>(group.getTrustLevels());
+
+        ethnicGroupHistory.get(group).add(record);
     }
 
-    public void recordImmediateEthnicityWealth(EthnicGroup group, int wealth){
-        ethnicityWealth.get(group).add(wealth);
-    }
-
-    public String getCommunityHistoryString(){
+    public String getHistoryJSON(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("{");
+        sb.append("[\n");
 
-        for(int value : communityWealth){
-            sb.append("{community: " + value + "}");
+        for (int i = 0; i < communityWealth.size(); i++) {
+            sb.append("\t{");
+            sb.append("\"community\": ").append(communityWealth.get(i));
+
+            for(Map.Entry<EthnicGroup, List<EthnicGroupRecord>> entry : ethnicGroupHistory.entrySet()){
+
+                sb.append(", \"").append(entry.getKey().getName())
+                    .append("\": ").append(entry.getValue().get(i).wealth);
+            }
+
+            sb.append(",\t \"_trust\": { ");
+
+            for(Map.Entry<EthnicGroup, List<EthnicGroupRecord>> entry : ethnicGroupHistory.entrySet()){
+
+                EthnicGroup group = entry.getKey();
+                EthnicGroupRecord record = entry.getValue().get(i);
+
+                record.trustLevels.forEach((ethnicity, trust) -> {
+                    sb.append("\"" + group.getName() + " -> " + ethnicity.getName() + "\": " + trust + ", ");
+                });
+            }
+
+            sb.append("}");
+
+            sb.append("},\n");
         }
 
-        sb.append("}");
+        sb.append("]\n");
 
         return sb.toString();
     }
 
-    public String getEthnicGroupsHistoryString(){
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("{");
-
-        for(EthnicGroup group : ethnicityWealth.keySet()){
-            //TODO nevím v jakém formátu to potřebujeme
-        }
-
-        sb.append("}");
-
-        return sb.toString();
+    public void addEthnicGroup(EthnicGroup ethnicGroup){
+        ethnicGroupHistory.putIfAbsent(ethnicGroup, new ArrayList<>());
     }
+
+
 }

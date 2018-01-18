@@ -7,7 +7,7 @@ import personas.TrustComplexPerson;
 public class Main {
     public static void main(String[] args) {
 
-        Game game = new Game(50);
+        Game game = new Game(30);
 
         //game.addPeopleToCommunity(1, Kavka::new);
         //game.addPeopleToCommunity(1, Podrazak::new);
@@ -23,16 +23,18 @@ public class Main {
         EthnicGroup groupBlue = new EthnicGroup("Blue");
         EthnicGroup groupRed = new EthnicGroup("Red");
 
+        groupBlue.setBiasTowards(groupRed, 1.0); // blue are good to red at the beginning
         groupRed.setBiasTowards(groupBlue, 0.0); // red hates blue
-        groupBlue.setBiasTowards(groupRed, 1.0); // blue are good to everyone at the beginning
 
-        game.addPeopleToCommunity(100, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupBlue);
-        game.addPeopleToCommunity(100, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupRed);
+        game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupBlue);
+        game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupRed);
 
 
         game.play();
 
         game.printCommunityResult();
+        game.printHistory();
+        game.printEthnicGroupsTrustLevels();
 
     }
 }

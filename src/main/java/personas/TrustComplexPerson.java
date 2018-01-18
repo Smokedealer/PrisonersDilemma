@@ -1,5 +1,7 @@
 package personas;
 
+import utils.MathEx;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -11,7 +13,7 @@ import java.util.Random;
 public class TrustComplexPerson extends SuspectedPerson {
     private Map<Person, Double> trustMap = new HashMap<>();
 
-    private double defaultTrust = 0.5;
+    private double defaultTrust;
     private double increaseStep = 0.1;
     private double decreaseStep = 0.1;
 
@@ -28,7 +30,7 @@ public class TrustComplexPerson extends SuspectedPerson {
     @Override
     public boolean decide(Person opponent) {
         trustMap.putIfAbsent(opponent, defaultTrust); // add first true results - "not yet betrayed" state
-        ethnicGroup.setBiasTowards(opponent.getEthnicity(), 0.5);
+        ethnicGroup.setBiasTowardsIfAbsent(opponent.getEthnicity(), 0.5);
 
         Double opponentTrust = trustMap.get(opponent);
         Double ethnicTrust = ethnicGroup.getEthnicityBias(opponent.getEthnicity());
@@ -46,19 +48,19 @@ public class TrustComplexPerson extends SuspectedPerson {
 
         trustMap.compute(opponent, (person, trust) -> {
             if(hisDecision) {
-                return Math.min(1, trust + increaseStep);
+                return MathEx.clamp(trust + increaseStep);
             }
             else {
-                return Math.max(0, trust - decreaseStep);
+                return MathEx.clamp(trust - decreaseStep);
             }
         });
 
-        ethnicGroup.getTrustLevels().compute(opponent.getEthnicity(), (person, trust) -> {
+        ethnicGroup.computeBiasTowards(opponent.getEthnicity(), (ethnicity, trust) -> {
             if(hisDecision) {
-                return Math.min(1, trust + increaseStep);
+                return MathEx.clamp(trust + increaseStep);
             }
             else {
-                return Math.max(0, trust - decreaseStep);
+                return MathEx.clamp(trust - decreaseStep);
             }
         });
 

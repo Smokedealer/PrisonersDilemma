@@ -2,6 +2,7 @@ package ethnicity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 
 /**
@@ -49,23 +50,41 @@ public class EthnicGroup implements Ethnicity {
      * Sets the bias towards a group. Value has to be between 0.0 and 1.0
      * otherwise it will be clamped to the nearest value.
      *
-     * @param ethnicGroup target group the bias is towards
+     * @param ethnicity target group the bias is towards
      * @param bias Amount of bias towards the group between 0.0 inclusive and 1.0 inclusive
      */
-    public void setBiasTowards(Ethnicity ethnicGroup, double bias){
-        if(bias < 0.0) bias = 0.0; //Clamp minimum
-        if(bias > 1.0) bias = 1.0; //Clamp maximum
+    public void setBiasTowards(Ethnicity ethnicity, double bias){
+        if(bias < 0.0) bias = 0.0; // Clamp minimum
+        if(bias > 1.0) bias = 1.0; // Clamp maximum
 
-        trustLevels.put(ethnicGroup, bias); //Replace old or insert
+        trustLevels.put(ethnicity, bias); // Replace old or insert
     }
+
+    /**
+     * Sets the bias towards a group. Value has to be between 0.0 and 1.0
+     * otherwise it will be clamped to the nearest value.
+     *
+     * @param ethnicity target group the bias is towards
+     * @param bias Amount of bias towards the group between 0.0 inclusive and 1.0 inclusive
+     */
+    public void setBiasTowardsIfAbsent(Ethnicity ethnicity, double bias){
+        if(bias < 0.0) bias = 0.0; // Clamp minimum
+        if(bias > 1.0) bias = 1.0; // Clamp maximum
+
+        trustLevels.putIfAbsent(ethnicity, bias); // Replace old or insert
+    }
+
+    public void computeBiasTowards(Ethnicity ethnicity, BiFunction<? super Ethnicity, ? super Double, ? extends Double> function) {
+        trustLevels.computeIfPresent(ethnicity, function);
+    }
+
 
     public double getEthnicityBias(Ethnicity ethnicity){
         return trustLevels.get(ethnicity);
     }
 
 
-    public Map<Ethnicity, Double> getTrustLevels(){
+    public Map<Ethnicity, Double> getTrustLevels() {
         return trustLevels;
     }
-
 }
