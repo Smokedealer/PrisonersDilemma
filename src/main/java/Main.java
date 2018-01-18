@@ -23,11 +23,11 @@ public class Main {
         EthnicGroup groupBlue = new EthnicGroup("Blue");
         EthnicGroup groupRed = new EthnicGroup("Red");
 
-        groupRed.trustLevels.put(groupBlue, 0.0); // red hates blue
-        groupBlue.trustLevels.put(groupRed, 1.0); // blue are good to everyone at the beginning
+        groupRed.setBiasTowards(groupBlue, 0.0); // red hates blue
+        groupBlue.setBiasTowards(groupRed, 1.0); // blue are good to everyone at the beginning
 
-        game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupBlue);
-        game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupRed);
+        game.addPeopleToCommunity(100, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupBlue);
+        game.addPeopleToCommunity(100, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupRed);
 
 
         game.play();

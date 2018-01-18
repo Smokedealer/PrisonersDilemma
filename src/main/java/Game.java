@@ -14,8 +14,12 @@ public class Game {
     private static final int SCORE_TRIAL_WIN = 10;
     private static final int SCORE_TRIAL_LOST = -10;
 
+    private int totalScore = 0;
+
     private Set<EthnicGroup> groups = new HashSet<>();
     private List<SuspectedPerson> community = new ArrayList<>();
+
+    private GameHistory history = new GameHistory();
 
     private int iterations;
 
@@ -25,12 +29,12 @@ public class Game {
 
 
     public void play() {
+        prepareHistory();
+
         if (community.size() < 2) {
             System.err.println("Not enough people in community.");
             return;
         }
-
-        int totalScore = 0;
 
         for (int i = 0; i < iterations; i++) {
             Collections.shuffle(community);
@@ -38,9 +42,25 @@ public class Game {
             for (int j = 0; j <= community.size() / 2; j += 2) {
                 totalScore += matchPeople(community.get(j), community.get(j + 1));
             }
+
+            logCurrentStep();
         }
 
         System.out.println("Total community score: " + totalScore);
+    }
+
+    private void logCurrentStep(){
+        history.addCommunityWealth(totalScore);
+
+        for (EthnicGroup group : groups) {
+            history.recordImmediateEthnicityWealth(group, group.getScore());
+        }
+    }
+
+    private void prepareHistory() {
+        for(SuspectedPerson person : community){
+            history.addEthnicity(person.getEthnicGroup());
+        }
     }
 
     private int matchPeople(SuspectedPerson person1, SuspectedPerson person2) {

@@ -28,10 +28,10 @@ public class TrustComplexPerson extends SuspectedPerson {
     @Override
     public boolean decide(Person opponent) {
         trustMap.putIfAbsent(opponent, defaultTrust); // add first true results - "not yet betrayed" state
-        ethnicGroup.trustLevels.putIfAbsent(opponent.getEthnicity(), 0.5);
+        ethnicGroup.setBiasTowards(opponent.getEthnicity(), 0.5);
 
         Double opponentTrust = trustMap.get(opponent);
-        Double ethnicTrust = ethnicGroup.trustLevels.get(opponent.getEthnicity());
+        Double ethnicTrust = ethnicGroup.getEthnicityBias(opponent.getEthnicity());
 
         double trust = opponentTrust * (ethnicTrust * 2);
         double rand = new Random().nextDouble();
@@ -53,7 +53,7 @@ public class TrustComplexPerson extends SuspectedPerson {
             }
         });
 
-        ethnicGroup.trustLevels.compute(opponent.getEthnicity(), (person, trust) -> {
+        ethnicGroup.getTrustLevels().compute(opponent.getEthnicity(), (person, trust) -> {
             if(hisDecision) {
                 return Math.min(1, trust + increaseStep);
             }
