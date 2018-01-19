@@ -6,31 +6,65 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * Created by Matěj Kareš on 18.01.2018.
+ * Recorder for game history.
+ *
+ * @author Matěj Kareš
  */
 public class GameHistory {
 
+    /**
+     * Record for one ethnic group in one point in time.
+     */
     public class EthnicGroupRecord {
+
+        /**
+         * Ethnic wealth.
+         */
         int wealth;
+
+        /**
+         * Trust levels towards other ethnic groups.
+         */
         HashMap<Ethnicity,Double> trustLevels;
     }
 
+    /**
+     * List of community wealth in time.
+     */
     private List<Integer> communityWealth = new ArrayList<>();
+
+    /**
+     * Map of ethnic groups with lists of history records.
+     */
     private Map<EthnicGroup, List<EthnicGroupRecord>> ethnicGroupHistory = new HashMap<>();
 
+
+    /**
+     * Records community wealth.
+     * @param wealth Wealth.
+     */
     public void recordCommunityWealth(int wealth){
         communityWealth.add(wealth);
     }
 
-    public void recordEthnicGroup(EthnicGroup group, int wealth){
+    /**
+     * Records ethnic group state.
+     * @param group Ethnic group.
+     */
+    public void recordEthnicGroup(EthnicGroup group){
         EthnicGroupRecord record = new EthnicGroupRecord();
-        record.wealth = wealth;
+        record.wealth = group.getScore();
         record.trustLevels = new HashMap<>(group.getTrustLevels());
 
         ethnicGroupHistory.get(group).add(record);
     }
 
+    /**
+     * Gets history as JSON string.
+     * @return History.
+     */
     public String getHistoryJSON(){
         StringBuilder sb = new StringBuilder();
 
@@ -68,15 +102,26 @@ public class GameHistory {
         return sb.toString();
     }
 
+    /**
+     * Adds ethnic group into recording.
+     * @param ethnicGroup Ethnic group.
+     */
     public void addEthnicGroup(EthnicGroup ethnicGroup){
         ethnicGroupHistory.putIfAbsent(ethnicGroup, new ArrayList<>());
     }
 
-
+    /**
+     * Gets development of community wealth.
+     * @return List of community wealth during time.
+     */
     public List<Integer> getCommunityWealth() {
         return communityWealth;
     }
 
+    /**
+     * Gets development of ethnic groups state (wealth and trustfulness).
+     * @return List of history records for all ethnic groups.
+     */
     public Map<EthnicGroup, List<EthnicGroupRecord>> getEthnicGroupHistory() {
         return ethnicGroupHistory;
     }

@@ -15,10 +15,21 @@ import java.util.Map;
 
 
 /**
- * @author ike
+ * Game history visualizer.
+ * Provides GUI window with line chart (using JFreeChart)
+ * containing wealthiness of community and ethnic groups
+ * during the simulation.
+ *
+ * @author Vojtěch Kinkor
  */
 public class GameHistoryVisualizer {
 
+    /**
+     * Game history visualizer.
+     * Provides GUI window with line chart (using JFreeChart)
+     * containing wealthiness of community and ethnic groups
+     * during the simulation.
+     */
     public static void visualize(GameHistory gameHistory) {
         javax.swing.SwingUtilities.invokeLater(() -> {
 
@@ -29,9 +40,9 @@ public class GameHistoryVisualizer {
             cp.setMaximumDrawWidth(4000);
             cp.setMaximumDrawHeight(4000);
 
-
+            // save chart to PNG
             /*try {
-                ChartUtilities.saveChartAsPNG(new File("jsim_gauss.png"), chart, 420, 220);
+                ChartUtilities.saveChartAsPNG(new File("jsim_gauss.png"), chart, 1000, 600);
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
@@ -50,12 +61,11 @@ public class GameHistoryVisualizer {
     /**
      * Creates a chart.
      *
-     * @param dataset the data for the chart.
-     * @return a chart.
+     * @param dataset The data for the chart.
+     * @return A chart.
      */
-    private static JFreeChart createChart(final XYDataset dataset) {
-
-        final JFreeChart chart = ChartFactory.createXYLineChart(
+    private static JFreeChart createChart(XYDataset dataset) {
+        JFreeChart chart = ChartFactory.createXYLineChart(
                 "Line Chart",               // chart title
                 "Iteration",                // x axis label
                 "Wealth",                   // y axis label
@@ -68,13 +78,12 @@ public class GameHistoryVisualizer {
 
         chart.setBackgroundPaint(Color.white);
 
-
         XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
-        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, new Color(42, 42, 42));
         renderer.setSeriesPaint(1, new Color(255, 0, 0));
         renderer.setSeriesPaint(2, new Color(0, 0, 255));
@@ -94,22 +103,29 @@ public class GameHistoryVisualizer {
         return chart;
     }
 
-
+    /**
+     * Creates a dataset based on game history.
+     * @param gameHistory Game history object with recorded simulation.
+     * @return Dataset.
+     */
     private static XYDataset createDataset(GameHistory gameHistory) {
 
         XYSeriesCollection dataset = new XYSeriesCollection();
 
+        // add wealth of community
         {
             XYSeries series = new XYSeries("Community");
             dataset.addSeries(series);
 
             List<Integer> communityWealth = gameHistory.getCommunityWealth();
 
+            // wealth in nth iteration
             for (int i = 0; i < communityWealth.size(); i++) {
                 series.add(i, communityWealth.get(i));
             }
         }
 
+        // add wealth of individual ethnic groups
         for (Map.Entry<EthnicGroup, List<GameHistory.EthnicGroupRecord>> entry : gameHistory.getEthnicGroupHistory().entrySet()) {
 
             EthnicGroup ethnicGroup = entry.getKey();
@@ -118,6 +134,7 @@ public class GameHistoryVisualizer {
             XYSeries series = new XYSeries(ethnicGroup.getName());
             dataset.addSeries(series);
 
+            // wealth in nth iteration
             for (int i = 0; i < records.size(); i++) {
                 GameHistory.EthnicGroupRecord record = records.get(i);
                 series.add(i, record.wealth);
@@ -125,7 +142,6 @@ public class GameHistoryVisualizer {
         }
 
         return dataset;
-
     }
 
 

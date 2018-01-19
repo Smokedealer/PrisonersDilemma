@@ -2,13 +2,21 @@ import ethnicity.EthnicGroup;
 import personas.*;
 
 /**
- * Created by Matěj Kareš on 11.12.2017.
+ * Prisoners dilemma simulation.<br><br>
+ * Semestral work - KIV/VSS, 2017/18, KIV/ZČU
+ *
+ * @author Matěj Kareš
+ * @author Vojtěch Kinkor
  */
 public class Main {
+
+    /**
+     * Prisoners dilemma simulation. Entry point.
+     * Console application with chart in GUI window.
+     */
     public static void main(String[] args) {
 
-        Game game = new Game(30);
-
+        Game game = new Game(50);
         int mode = 0;
 
         if(mode == 0) {
@@ -36,7 +44,6 @@ public class Main {
             game.addPeopleToCommunity(1, Kavka::new);
             game.addPeopleToCommunity(1, Podrazak::new);
             game.addPeopleToCommunity(1, TitForTat::new);
-            game.addPeopleToCommunity(1, TitForTat::new);
             game.addPeopleToCommunity(1, TitForTwoTats::new);
             game.addPeopleToCommunity(1, Optimalni::new);
             game.addPeopleToCommunity(1, Rozmar::new);
@@ -47,13 +54,15 @@ public class Main {
         }
 
 
+        game.play(); // run simulation
 
-        game.play();
-
+        // print stats to console
         game.printCommunityResult();
         game.printHistory();
         //game.printEthnicGroupsTrustLevels();
-        game.showHistoryGraph();
+
+        // show window with history chart
+        game.showHistoryChart();
 
     }
 }

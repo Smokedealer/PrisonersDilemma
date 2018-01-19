@@ -3,26 +3,41 @@ package personas;
 import ethnicity.EthnicGroup;
 import ethnicity.Ethnicity;
 
+
 /**
- * Created by Matěj Kareš on 02.01.2018.
+ * Base class for suspected person who can stand in front of trial.
+ *
+ * @author Matěj Kareš
+ * @author Vojtěch Kinkor
  */
 public abstract class SuspectedPerson implements Person {
 
     private static int lastID = 0;
     private final int id;
 
+    /**
+     * Personal wealth score.
+     */
     private int score = 0;
+
+    /**
+     * Related ethnic group.
+     */
     protected EthnicGroup ethnicGroup;
 
+
+    /**
+     * Base class for suspected person who can stand in front of trial.
+     */
     public SuspectedPerson() {
         id = lastID++;
     }
 
 
     /**
-     * <p>Make a decision for trial.
+     * Makes a decision for trial.
      * <p>{@code true} denotes 'being good' - cooperation with other player.
-     * <br>{@code false} denotes 'being bad' - rat the other player out/doublecross.
+     * <br>{@code false} denotes 'being bad' - rat the other player out/cross him.
      *
      * @param opponent Oppponent.
      * @return Decision.
