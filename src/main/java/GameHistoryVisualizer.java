@@ -66,7 +66,7 @@ public class GameHistoryVisualizer {
      */
     private static JFreeChart createChart(XYDataset dataset) {
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Line Chart",               // chart title
+                "Prisoners dilemma",        // chart title
                 "Iteration",                // x axis label
                 "Wealth",                   // y axis label
                 dataset,                    // data

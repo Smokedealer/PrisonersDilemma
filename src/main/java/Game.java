@@ -229,4 +229,12 @@ public class Game {
         groups.add(ethnicGroup);
         history.addEthnicGroup(ethnicGroup);
     }
+
+    /**
+     * Sets number of iterations per single "game play"/"simulation run".
+     * @param iterations Number of iterations per single "game play"/"simulation run".
+     */
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
+    }
 }

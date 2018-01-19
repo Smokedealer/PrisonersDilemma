@@ -1,6 +1,10 @@
 import ethnicity.EthnicGroup;
 import personas.*;
 
+import javax.script.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 /**
  * Prisoners dilemma simulation.<br><br>
  * Semestral work - KIV/VSS, 2017/18, KIV/ZČU
@@ -15,11 +19,43 @@ public class Main {
      * Console application with chart in GUI window.
      */
     public static void main(String[] args) {
-
         Game game = new Game(50);
-        int mode = 0;
 
-        if(mode == 0) {
+        String scriptFilename = null;
+        if(args.length > 0 && args[0].endsWith(".js")) scriptFilename = args[0];
+
+        //scriptFilename = "script.basic.js";
+        //scriptFilename = "script.tft-robots.js";
+        //scriptFilename = "script.trust.1.js";
+
+
+        // try running JS script
+        if(scriptFilename != null) {
+            try {
+                // manual: https://www.n-k.de/riding-the-nashorn/
+
+                ScriptEngineManager factory = new ScriptEngineManager();
+                ScriptEngine engine = factory.getEngineByName("JavaScript");
+
+                ScriptingInterface scriptingInterface = new ScriptingInterface(game);
+
+                Bindings params = new SimpleBindings();
+                params.put("game", scriptingInterface.gameManager);
+                params.put("factory", scriptingInterface.factory);
+
+                engine.setBindings(params, ScriptContext.ENGINE_SCOPE);
+
+                engine.eval(new FileReader(scriptFilename));
+
+                System.out.println("Running " + scriptFilename + ":");
+
+            } catch (ScriptException | FileNotFoundException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        else {
+            System.out.println("Unknown scenario. Please add script filename (.js) as first argument. Running predefined code.");
 
             //game.addPeopleToCommunity(1, Kavka::new);
             //game.addPeopleToCommunity(1, Podrazak::new);
@@ -39,18 +75,7 @@ public class Main {
 
             game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupBlue);
             game.addPeopleToCommunity(1, () -> new TrustComplexPerson(0.5, 0.01, 0.05), groupRed);
-        }
-        else if(mode == 1) { // porovnani klasickych alg.
-            game.addPeopleToCommunity(1, Kavka::new);
-            game.addPeopleToCommunity(1, Podrazak::new);
-            game.addPeopleToCommunity(1, TitForTat::new);
-            game.addPeopleToCommunity(1, TitForTwoTats::new);
-            game.addPeopleToCommunity(1, Optimalni::new);
-            game.addPeopleToCommunity(1, Rozmar::new);
-        }
-        else if(mode == 2) { // 2x TFT pomoci primitivni duvery, kazdy zacina opacne
-            game.addPeopleToCommunity(1, () -> new TrustRobotPerson(0.0, 1.0, 1.0), new EthnicGroup("RobotTFT_0")); // act as tit for tat, begin with faul
-            game.addPeopleToCommunity(1, () -> new TrustRobotPerson(1.0, 1.0, 1.0), new EthnicGroup("RobotTFT_1")); // act as tit for tat, begin with cooperation
+
         }
 
 
