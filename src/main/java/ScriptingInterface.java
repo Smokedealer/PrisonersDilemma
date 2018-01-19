@@ -36,7 +36,6 @@ public class ScriptingInterface {
     }
 
 
-
     public class Factory {
 
         private Factory() {
@@ -66,12 +65,24 @@ public class ScriptingInterface {
             return Rozmar::new;
         }
 
+        public Supplier<SuspectedPerson> TrustRobotPerson(double defaultTrust) {
+            return () -> new TrustRobotPerson(defaultTrust);
+        }
+
         public Supplier<SuspectedPerson> TrustRobotPerson(double defaultTrust, double increaseStep, double decreaseStep) {
             return () -> new TrustRobotPerson(defaultTrust, increaseStep, decreaseStep);
         }
 
+        public Supplier<SuspectedPerson> TrustComplexPerson(double defaultTrust) {
+            return () -> new TrustComplexPerson(defaultTrust);
+        }
+
         public Supplier<SuspectedPerson> TrustComplexPerson(double defaultTrust, double increaseStep, double decreaseStep) {
             return () -> new TrustComplexPerson(defaultTrust, increaseStep, decreaseStep);
+        }
+
+        public Supplier<SuspectedPerson> TrustComplexPerson(double defaultTrust, double increaseStep, double decreaseStep, double groupIncreaseStep, double groupDecreaseStep) {
+            return () -> new TrustComplexPerson(defaultTrust, increaseStep, decreaseStep, groupIncreaseStep, groupDecreaseStep);
         }
 
         public EthnicGroup EthnicGroup(String name) {

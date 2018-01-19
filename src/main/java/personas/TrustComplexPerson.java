@@ -20,6 +20,9 @@ public class TrustComplexPerson extends SuspectedPerson {
     private double increaseStep = 0.1;
     private double decreaseStep = 0.1;
 
+    private double groupIncreaseStep = 0.1;
+    private double groupDecreaseStep = 0.1;
+
     /**
      * Algorithm with complex use of trust levels.
      * Acts upon personal trust towards individuals
@@ -41,9 +44,26 @@ public class TrustComplexPerson extends SuspectedPerson {
      * @param decreaseStep Decrease in trust for crossing.
      */
     public TrustComplexPerson(double defaultTrust, double increaseStep, double decreaseStep) {
+        this(defaultTrust, increaseStep, decreaseStep, increaseStep * 0.5, decreaseStep * 0.5);
+    }
+
+    /**
+     * Algorithm with complex use of trust levels.
+     * Acts upon personal trust towards individuals
+     * and trust towards ethnicity.
+     *
+     * @param defaultTrust Default trust level for strangers.
+     * @param increaseStep Increase in trust for cooperation.
+     * @param decreaseStep Decrease in trust for crossing.
+     * @param groupIncreaseStep Increase in ethnicity trust for cooperation.
+     * @param groupDecreaseStep Decrease in ethnicity trust for cooperation.
+     */
+    public TrustComplexPerson(double defaultTrust, double increaseStep, double decreaseStep, double groupIncreaseStep, double groupDecreaseStep) {
         this.defaultTrust = defaultTrust;
         this.increaseStep = increaseStep;
         this.decreaseStep = decreaseStep;
+        this.groupIncreaseStep = groupIncreaseStep;
+        this.groupDecreaseStep = groupDecreaseStep;
     }
 
     /**
@@ -95,10 +115,10 @@ public class TrustComplexPerson extends SuspectedPerson {
 
         ethnicGroup.computeBiasTowards(opponent.getEthnicity(), (ethnicity, trust) -> {
             if(hisDecision) {
-                return MathEx.clamp(trust + increaseStep);
+                return MathEx.clamp(trust + groupIncreaseStep);
             }
             else {
-                return MathEx.clamp(trust - decreaseStep);
+                return MathEx.clamp(trust - groupDecreaseStep);
             }
         });
 
