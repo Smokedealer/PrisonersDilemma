@@ -1,10 +1,7 @@
 import ethnicity.EthnicGroup;
 import ethnicity.Ethnicity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -27,7 +24,7 @@ public class GameHistory {
         /**
          * Trust levels towards other ethnic groups.
          */
-        HashMap<Ethnicity,Double> trustLevels;
+        Map<Ethnicity,Double> trustLevels;
     }
 
     /**
