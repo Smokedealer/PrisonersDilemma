@@ -17,11 +17,14 @@ Syntax:
 
 	factory.Kavka(), factory.<Persona>(), factory.<Persona>(params...)
 	factory.TrustRobotPerson(defaultTrust, trustIncrement, trustDecrement)
+	factory.TrustRobotPerson(defaultTrust, trustIncrement, trustDecrement, groupTrustIncrement, groupTrustDecrement)
 
 		@desc  Factory for generating people. Can have additional parameters (in case of TrustRobotPerson and TrustComplexPerson).
-		@param defaultTrust   - Default trust level towards strangers  <0,1>
-		@param trustIncrement - Increment in trust when opponent cooperates  <0,1>
-		@param trustDecrement - Decrement in trust when opponent doesn't cooperate  <0,1>
+		@param defaultTrust        - Default trust level towards strangers  <0,1>
+		@param trustIncrement      - Increment in trust when opponent cooperates  <0,1>
+		@param trustDecrement      - Decrement in trust when opponent doesn't cooperate  <0,1>
+		@param groupTrustIncrement - Increment in trust towards ethnic group when opponent cooperates  <0,1>
+		@param groupTrustDecrement - Decrement in trust towards ethnic group when opponent doesn't cooperate  <0,1>
 
 
 	factory.EthnicGroup(name)
