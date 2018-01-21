@@ -26,7 +26,7 @@ public class Main {
 
         //scriptFilename = "script.basic.js";
         //scriptFilename = "script.tft-robots.js";
-        //scriptFilename = "script.trust.1.js";
+        //scriptFilename = "script.trust.js";
 
 
         // try running JS script
